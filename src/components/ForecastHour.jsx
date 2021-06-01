@@ -8,15 +8,11 @@ const ForecastHour = (props) => {
   const dateConvert = new Date(date * 1000).toLocaleTimeString("en-gb")
   const iconUrl = `https://openweathermap.org/img/w/${icon}.png`
   let hour = dateConvert.slice(0, 2)
-  let timePeriod = "AM" 
-  if(hour >= 12) {
-    hour -= 12
-    timePeriod = "PM"
-  }
+
 
   return (
     <ForecastWrapper>
-      <Text>{hour}:00{timePeriod}</Text>
+      <Text>{hour}:00</Text>
       <WeatherIcon src={iconUrl} />
       <SmallLabel>
         {temp}&#176;C
