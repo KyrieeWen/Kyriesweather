@@ -5,8 +5,6 @@ import NotFound from './components/NotFound'
 import { AppTitle, WeatherWrapper } from './css/App'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudSun } from '@fortawesome/free-solid-svg-icons'
-import { Provider } from 'react-redux'
-import store from './store'
 
 
 class App extends Component {
@@ -134,7 +132,7 @@ class App extends Component {
     // 获取state中的props
     const { weatherInfo, error } = this.state;
     return (
-      <Provider store={store}>
+      <>
         <AppTitle showLabel={(weatherInfo || error) && true}>
           <FontAwesomeIcon icon={faCloudSun} />Kyrie's Weather
         </AppTitle>
@@ -159,7 +157,7 @@ class App extends Component {
           {/* 传递props error给子组件NotFound */}
           {error && <NotFound error={error} />}
         </WeatherWrapper>
-      </Provider>
+      </>
     );
   }
 }
