@@ -26,9 +26,7 @@ class App extends Component {
           fetch(location)
             .then(response => response.json())
             .then(location => {
-              console.log(location)
               const city = location.city
-              console.log(city)
               this.setState(() => ({
                 value:city
               }))
@@ -43,7 +41,6 @@ class App extends Component {
     // 阻止默认执行
     e.preventDefault();
     const value = this.state.value
-    console.log(value)
     // Google Cloud Platform API => key
     const APIkey = '638d3030eafa245040554df387be8a9c'
     // Geocoding API: Convert between addresses and geographic coordinates
@@ -53,7 +50,6 @@ class App extends Component {
       // json() 返回一个被解析为JSON格式的promise对象
       .then(response => response.json())
       .then(originData => {
-        console.log(originData)
         // 获取经度与维度
         const lat = originData.results[0].geometry.location.lat 
         const lon = originData.results[0].geometry.location.lng
@@ -62,7 +58,6 @@ class App extends Component {
         fetch(info)
           .then(response => response.json())
           .then(weatherData => {
-            console.log(weatherData)
             const months = ['January','February','March','April','May','June','July','August','September','October','Nocvember','December',]
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
             // formatted_address: Sydney NSW,Australia
