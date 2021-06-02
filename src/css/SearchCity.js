@@ -18,19 +18,19 @@ export const SearchBar = styled.form`
 `
 
 export const SearchInput = styled.input`
-  width: 300px;
+  width: 100%;
   border: none;
   background-color: #ffff;
   opacity: 0.5;
   font-size: 18px;
   padding: 10px 15px 10px 40px;
-  color: #c5c5c5;
+  color: #3b3b3b;
   border-radius: 20px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transition-property: transform, box-shadow;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
-  &.slide-enter {
+  /* &.slide-enter {
     transition: all .2s ease-out;
   }
   &.slide-enter-active {
@@ -41,11 +41,11 @@ export const SearchInput = styled.input`
   }
   &.slide-exit-active {
     width: 300px;
+  } */
+  &:focus {
+    outline: none;
   }
-  &.focused {
-      width: 100%;
-      outline: none;
-    }
+
 
   @media ${device.laptop} {
     padding: 15px 20px 15px 45px;
@@ -55,18 +55,28 @@ export const SearchInput = styled.input`
 
 export const SearchIcon = styled.span`
   display: block;
-  position: absolute;
-  top:30%;
-  left: 170px;
-  height: 14px;
-  width: 14px;
-  font-size: 14px;
-  color: #c5c5c5;
-  &.focused {
+  color: #ffffff;
+  &.faSearch {
     position: absolute;
     top:30%;
-    left: 25px;
+    left: 20px;
+    height: 14px;
+    width: 14px;
+    font-size: 18px;
   }
+  &.faMapMarkerAlt {
+    position: absolute;
+    top: 25%;
+    right: 20px;
+    font-size: 22px;
+    transition-property: transform;
+    transition-duration: 0.3s;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+
 
   @media ${device.tablet} {
     height: 15px;
