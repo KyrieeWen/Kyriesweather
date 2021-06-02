@@ -23,11 +23,12 @@ class App extends Component {
         .then(source => {
           const ip = source.ip
           const location = `http://api.ipstack.com/${ip}?access_key=70e379f849f96bdc85e64dc5f47ee03c`
-          console.log(location)
           fetch(location)
             .then(response => response.json())
             .then(location => {
+              console.log(location)
               const city = location.city
+              console.log(city)
               this.setState(() => ({
                 value:city
               }))
