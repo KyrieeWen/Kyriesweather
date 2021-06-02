@@ -1,28 +1,43 @@
-import React, { Component, Fragment }from 'react'
+import React, { Component } from 'react'
 import SearchCity from './components/SearchCity'
 import Result from './components/Result'
 import NotFound from './components/NotFound'
 import { AppTitle, WeatherWrapper } from './css/App'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudSun } from '@fortawesome/free-solid-svg-icons'
+import { Provider } from 'react-redux'
+import store from './store'
 
 
 class App extends Component {
   // 初始化state
   state = {
-    value: '',
+    value:'',
     weatherInfo: null,
-    error: false,
-    focused: false
+    error: false
   }
 
-  handleInputChange = (e) => {
-    // SyntheticBaseEvent {target -> value: s}
-    const value = e.target.value
-    this.setState(() => ({
-      value: value
-    }))
+  getUserIp = (e) => {
+    if(window.confirm("Kyrie's Weather wants to get your IP address")) {
+      const source = 'https://api.ipify.org/?format=json'
+      fetch(source)
+        .then(response => response.json())
+        .then(source => {
+          const ip = source.ip
+          const location = `http://api.ipstack.com/${ip}?access_key=70e379f849f96bdc85e64dc5f47ee03c`
+          fetch(location)
+            .then(response => response.json())
+            .then(location => {
+              const city = location.city
+              this.setState(() => ({
+                value:city
+              }))
+              this.handleSearchCity(e)
+            })
+        })
+    }
   }
+
 
   handleSearchCity = (e) => {
     // 阻止默认执行
@@ -61,9 +76,7 @@ class App extends Component {
             //slice(0, 5) -> 截取时间
             const sunset = new Date(weatherData.current.sunset * 1000).toLocaleTimeString('en-gb').slice(0, 5)
             const sunrise = new Date(weatherData.current.sunrise * 1000).toLocaleTimeString('en-gb').slice(0, 5)
-            console.log(sunset)
-            console.log(sunrise)
-                    // 储存天气信息
+            // 储存天气信息
             const weatherInfo = {
               address,
               date,
@@ -85,7 +98,6 @@ class App extends Component {
             this.setState(() => ({
               weatherInfo,
               error: false,
-              value: ''
             }))
           })
           // weatherData拉取存在异常
@@ -107,23 +119,20 @@ class App extends Component {
       })
   }
 
-  handleInputFocus = () => {
-    this.setState({
-      focused: true
-    })
+  handleInputChange = (e) => {
+    // SyntheticBaseEvent {target -> value: s}
+    const value = e.target.value
+    this.setState(() => ({
+      value: value
+    }))
   }
 
-  handleInputBlur = () => {
-    this.setState({
-      focused: false
-    })
-  }
 
   render() {
     // 获取state中的props
-    const { value, weatherInfo, error, focused } = this.state;
+    const { weatherInfo, error } = this.state;
     return (
-      <Fragment>
+      <Provider store={store}>
         <AppTitle showLabel={(weatherInfo || error) && true}>
           <FontAwesomeIcon icon={faCloudSun} />Kyrie's Weather
         </AppTitle>
@@ -134,14 +143,12 @@ class App extends Component {
           </AppTitle>
           <SearchCity
             // 更新value为用户输入值
-            value={value}
-            focused={focused}
             // 传递props给SearchCity
+            value={this.state.value}
             showResult={(weatherInfo || error) && true}
             change={this.handleInputChange}
             submit={this.handleSearchCity}
-            inputFocus={this.handleInputFocus}
-            inputBlur={this.handleInputBlur}
+            map={this.getUserIp}
           />
           {/* 如果获取到了weatherInfo则展示 否则隐藏 */}
           {/* 传递props weather给子组件Result */}
@@ -150,9 +157,9 @@ class App extends Component {
           {/* 传递props error给子组件NotFound */}
           {error && <NotFound error={error} />}
         </WeatherWrapper>
-      </Fragment>
+      </Provider>
     );
   }
 }
 
-export default App;
+export default App
