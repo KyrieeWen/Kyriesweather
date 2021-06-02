@@ -5,7 +5,8 @@ import NotFound from './components/NotFound'
 import { AppTitle, WeatherWrapper } from './css/App'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudSun } from '@fortawesome/free-solid-svg-icons'
-
+import { Provider } from 'react-redux'
+import store from './store'
 
 
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
         .then(source => {
           const ip = source.ip
           const location = `http://api.ipstack.com/${ip}?access_key=70e379f849f96bdc85e64dc5f47ee03c`
+          console.log(location)
           fetch(location)
             .then(response => response.json())
             .then(location => {
@@ -42,6 +44,7 @@ class App extends Component {
     // 阻止默认执行
     e.preventDefault();
     const value = this.state.value
+    console.log(value)
     // Google Cloud Platform API => key
     const APIkey = '638d3030eafa245040554df387be8a9c'
     // Geocoding API: Convert between addresses and geographic coordinates
@@ -131,7 +134,7 @@ class App extends Component {
     // 获取state中的props
     const { weatherInfo, error } = this.state;
     return (
-      <>
+      <Provider store={store}>
         <AppTitle showLabel={(weatherInfo || error) && true}>
           <FontAwesomeIcon icon={faCloudSun} />Kyrie's Weather
         </AppTitle>
@@ -156,7 +159,7 @@ class App extends Component {
           {/* 传递props error给子组件NotFound */}
           {error && <NotFound error={error} />}
         </WeatherWrapper>
-      </>
+      </Provider>
     );
   }
 }
